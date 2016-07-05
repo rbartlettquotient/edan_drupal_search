@@ -3,6 +3,7 @@ description = Module that adds a search tab to Drupal's built-in search, for sea
 core = 7.x
 dependencies[] = edan_record
 dependencies[] = edan_search
+configure = admin/config/search/edan-searchtab
 package = EDAN Web Services
 
 ; Manually added package info, since we maintain the updates

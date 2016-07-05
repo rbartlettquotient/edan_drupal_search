@@ -1,5 +1,35 @@
 <?php
 
+
+/**
+ * Implements hook_menu().
+ */
+function edan_drupal_searchtab_menu() {
+  $items = array();
+
+  $items['admin/config/search/edan-searchtab'] = array(
+    'title' => 'EDAN Search Tab Configuration',
+    'description' => 'Configuration for EDAN Drupal search tab.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('edan_searchtab_settings_form'),
+    'access arguments' => array('administer edan configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/admin.inc',
+  );
+
+  $base_path = _edan_search_variable_get('menu_results_page');
+  $c = count(explode('/', $base_path));
+  $items[$base_path] = array(
+    'title' => _edan_search_variable_get('menu_results_title'),
+    'title callback' => 'edan_search_title_results',
+    'page callback' => 'edan_search_menupage_results',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
 /**
  * Implements hook_search_info().
  */
@@ -32,12 +62,13 @@ function edan_drupal_searchtab_search_info() {
 
    */
 
-  // Make the title translatable.
-  t('EDAN');
+  $current_settings = variable_get('edan_search', NULL);
+  $searchtab_path = isset($current_settings['searchtab_results_page']) ? $current_settings['searchtab_results_page'] : 'edanresults';
+  $searchtab_title = isset($current_settings['searchtab_title']) ? $current_settings['searchtab_title'] : 'EDAN';
 
   return array(
-    'title' => 'EDAN Content',
-    'path' => 'edan', // becomes /search/edan
+    'title' => t($searchtab_title),
+    'path' => $searchtab_path, // 'edan' becomes /search/edan
     'conditions_callback' => 'edan_drupal_searchtab_search_conditions',
   );
 

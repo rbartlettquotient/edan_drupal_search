@@ -46,13 +46,11 @@ function edan_searchtab_settings_form_submit($form, &$form_state) {
   // Get the current settings
   $current_settings = variable_get('edan_search', NULL);
   $original_path = $current_settings['searchtab_results_page'];
-dpm($current_settings);
 
   // Build settings from submission
   $current_settings['searchtab_results_page'] = (isset($form_state['values']['searchtab_results_page'])) ? $form_state['values']['searchtab_results_page'] : _edan_search_variable_defaults('searchtab_results_page');
   $current_settings['searchtab_title'] = (isset($form_state['values']['searchtab_title'])) ? $form_state['values']['searchtab_title'] : _edan_search_variable_defaults('searchtab_title');
 
-dpm($current_settings);
   // Save settings
   variable_set('edan_search', $current_settings);
 
